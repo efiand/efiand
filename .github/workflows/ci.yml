@@ -1,0 +1,43 @@
+name: Action
+on:
+  push:
+    branches:
+      - main
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18'
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        if: "!contains(github.event.head_commit.message, '[skip')"
+        run: npm run lint
+      - name: Build
+        if: "!contains(github.event.head_commit.message, '[skip-build')"
+        run: npm run build
+      - name: Prepare server
+        if: "!contains(github.event.head_commit.message, '[skip-build')"
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_SERVER_HOST }}
+          username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
+          password: ${{ secrets.DEPLOY_SERVER_PASSWORD }}
+          script: |
+            cd ${{ secrets.DEPLOY_SERVER_TARGET }}
+            rm -rf public
+      - name: Copy to server
+        if: "!contains(github.event.head_commit.message, '[skip-build')"
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEPLOY_SERVER_HOST }}
+          username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
+          password: ${{ secrets.DEPLOY_SERVER_PASSWORD }}
+          source: public/*
+          target: ${{ secrets.DEPLOY_SERVER_TARGET }}

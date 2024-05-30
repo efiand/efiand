@@ -1,0 +1,13 @@
+$transitions-default: 0.3s ease-in-out;
+
+@mixin tablet {
+	@media (min-width: 768px) {
+		@content;
+	}
+}
+
+@mixin desktop {
+	@media (min-width: 1240px) {
+		@content;
+	}
+}
