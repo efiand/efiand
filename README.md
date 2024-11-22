@@ -2,7 +2,6 @@
 [Telegram](https://t.me/efiand)   •  
 [Linkedin](https://www.linkedin.com/in/efiand)   •  
 [Хабр Карьера](https://career.habr.com/efiand)   •  
-[HH](https://hh.ru/resume/e21def3aff03fe14310039ed1f4e6e38386830)   •  
 [HTML Academy](https://htmlacademy.ru/profile/efiand)   •  
 [NPM](https://www.npmjs.com/~efiand)
 
@@ -83,8 +82,9 @@
 
    _Октябрь 2023 — …_
 
-   - Разработка высокоинтерактивных компонентов SPA для [Sape Links](https://links.sape.ru) - самой крупной платформы линкбилдинга.
-   - Разработка главной страницы sape.ru (досрочная сдача функционала) и поддержка лендингов компании.
+   - Разработка высокоинтерактивных компонентов SPA для [Links Sape](https://sape.ru) и [Serpzilla](https://serpzilla.com) - самых крупных платформ линкбилдинга.
+   - Разработка и поддержка лендингов компании.
+   - В качестве техлида и архитектора разрабатываю общую библиотеку Vue-компонентов, SCSS-модулей, TS-модулей, плагинов для Vite, настроек линтеров. Внедрил автогенерацию типов на основе Open API.
 
 ## Примеры работ
 
