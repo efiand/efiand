@@ -5,6 +5,8 @@
 [HTML Academy](https://htmlacademy.ru/profile/efiand)   •  
 [NPM](https://www.npmjs.com/~efiand)
 
+![](https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=efiand)
+![](https://github-profile-summary-cards.vercel.app/api/cards/stats?username=efiand)
 
 ## Наставничество
 
@@ -38,6 +40,8 @@
 Есть некоторый опыт в бэкенде (SSR, API):
 
 - `Node`, `PHP`, `SQL`
+
+[![codewars](https://www.codewars.com/users/efiand/badges/small)](https://www.codewars.com/users/efiand)   
 
 ### 🎓 Обучение и первые подработки
 
