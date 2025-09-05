@@ -1,0 +1,50 @@
+@keyframes grow-back {
+	to {
+		transform: scale(1);
+	}
+}
+
+@keyframes move-back {
+	to {
+		transform: translateY(0);
+	}
+}
+
+@keyframes jump {
+	0% {
+		transform: scale(0.1) translateY(70%);
+		opacity: 0;
+	}
+
+	20% {
+		transform: scale(0.2) translateY(90%);
+	}
+
+	30% {
+		transform: scale(0.3) translateY(30%);
+	}
+
+	40% {
+		transform: scale(0.4) translateY(60%);
+	}
+
+	50% {
+		transform: scale(0.5) translateY(30%);
+	}
+
+	60% {
+		transform: scale(0.6) translateY(60%);
+	}
+
+	70% {
+		transform: scale(0.7) translateY(30%);
+	}
+
+	80% {
+		transform: scale(0.8) translateY(50%);
+	}
+
+	to {
+		transform: scale(1) translateY(1px);
+	}
+}
