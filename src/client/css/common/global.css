@@ -1,0 +1,48 @@
+html {
+	--scroll-behavior: auto;
+	--transition: none;
+
+	height: 100%;
+	font-size: 14px;
+}
+
+body {
+	min-width: 320px;
+	height: 100%;
+	margin: 0;
+	line-height: 1.5;
+	font-family: "Manrope", sans-serif;
+	font-feature-settings:
+		"tnum" on,
+		"lnum" on;
+	color: #323232;
+	text-rendering: optimizeLegibility;
+	-webkit-tap-highlight-color: transparent;
+	background-image: linear-gradient(#71bddf, #61bddf);
+	overflow: hidden scroll;
+	overflow-anchor: none;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+@media (min-width: 768px) {
+	html {
+		font-size: 18px;
+	}
+}
+
+@media (min-width: 1240px) {
+	html {
+		font-size: 20px;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		--transition: 0.3s ease-in-out;
+		--scroll-behavior: smooth;
+	}
+}
