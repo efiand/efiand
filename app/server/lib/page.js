@@ -6,6 +6,8 @@ import { getCss } from "#server/lib/css.js";
 
 let cssCache = "";
 
+const DESCRIPTION = "Сайт веб-разработчика: услуги по созданию сайтов недорого.";
+
 /** @type {(data: LayoutData) => Promise<string>} */
 export async function renderPage({ heading, pageTemplate = "", pathname = "" }) {
 	if (!cssCache) {
@@ -25,7 +27,9 @@ export async function renderPage({ heading, pageTemplate = "", pathname = "" }) 
 			<meta name="apple-mobile-web-app-capable" content="yes">
 
 			<title>${title}</title>
+			<meta name="description" content="${DESCRIPTION}">
 			<meta property="og:title" content="${title}">
+			<meta property="og:description" content="${DESCRIPTION}">
 			<meta property="og:locale" content="ru_RU">
 			<meta property="og:type" content="website">
 			<meta property="og:site_name" content="efiand.ru">
