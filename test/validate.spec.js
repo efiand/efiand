@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { error } from "node:console";
 import { after, before, test } from "node:test";
 import { XMLValidator } from "fast-xml-parser";
 import { HtmlValidate } from "html-validate";
@@ -43,8 +42,8 @@ test("All pages have valid HTML markup", async () => {
 			if (!report.valid) {
 				errorsCount++;
 				report.results.forEach(({ messages }) => {
-					messages.forEach(({ column, line, ruleUrl, message }) => {
-						error(`${page} [${line}:${column}] ${message} (${ruleUrl})`);
+					messages.forEach(({ column, line, message, ruleUrl }) => {
+						console.error(`${page} [${line}:${column}] ${message} (${ruleUrl})`);
 					});
 				});
 			}
@@ -58,7 +57,7 @@ test("All pages have valid BEM classes in markup", () => {
 	let errorsCount = 0;
 
 	pages.forEach(async (page, i) => {
-		const result = lintBem({ content: markups[i], log: error, name: page });
+		const result = lintBem({ content: markups[i], log: console.error, name: page });
 		if (result.warningCount) {
 			errorsCount++;
 		}
@@ -71,13 +70,16 @@ test("sitemap.xml is valid", async () => {
 	const markup = await fetch(`${host}/sitemap.xml`).then((res) => res.text());
 	const result = XMLValidator.validate(markup);
 	const valid = result === true;
+
 	if (!valid) {
 		const { msg, line, col } = result.err;
-		error(`sitemap.xml [${line}:${col}] ${msg}`);
+		console.error(`sitemap.xml [${line}:${col}] ${msg}`);
 	}
+
 	assert.strictEqual(valid, true);
 });
 
-after(() => {
+after(async () => {
 	server?.close();
+	setTimeout(process.exit, 0);
 });
