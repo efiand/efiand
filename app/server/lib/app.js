@@ -1,8 +1,35 @@
 import { createServer } from "node:http";
-import { host, port } from "#server/constants.js";
-import { handleError } from "#server/lib/error.js";
+import { renderPromo } from "#common/components/promo.js";
+import { log } from "#common/lib/log.js";
+import { host, isDev, port } from "#server/constants.js";
 import { renderPage } from "#server/lib/page.js";
 import { routes } from "#server/routes/index.js";
+
+/** @type {(error: unknown, url: URL) => Promise<{ statusCode: number; template: string }>} */
+async function handleError(error, { href, pathname }) {
+	let message = "На сервере произошла ошибка.";
+	let statusCode = 500;
+	if (error instanceof Error) {
+		if (typeof error.cause === "number") {
+			statusCode = error.cause;
+		}
+		if (isDev || statusCode !== 500) {
+			({ message } = error);
+		}
+	}
+
+	if (!pathname?.startsWith("/__")) {
+		log.error(`❌ [HTTP ERROR ${statusCode} | ${href}]`, error);
+	}
+
+	const heading = `Ошибка ${statusCode}`;
+	const template = await renderPage({
+		heading,
+		pageTemplate: renderPromo(`${heading}.`, message),
+	});
+
+	return { statusCode, template };
+}
 
 /** @type {ServerMiddleware} */
 async function next(req, res) {
@@ -31,7 +58,7 @@ async function next(req, res) {
 			template = await renderPage({ ...routeData.page, pathname });
 		}
 	} catch (error) {
-		({ statusCode, template } = await handleError(error, url.href));
+		({ statusCode, template } = await handleError(error, url));
 	}
 
 	res.statusCode = statusCode;
@@ -50,8 +77,21 @@ export function createApp(middleware) {
 	});
 
 	server.listen(port, "localhost", () => {
-		console.info(`Сервер запущен по адресу: ${host}`);
+		log.info(`✅ Сервер запущен по адресу: ${host}`);
 	});
 
 	return server;
+}
+
+/** @type {(server?: import("node:http").Server) => Promise<void>} */
+export async function closeApp(server) {
+	try {
+		if (server) {
+			await new Promise((resolve, reject) => {
+				server.close((err) => (err ? reject(err) : resolve("")));
+			});
+		}
+	} catch (error) {
+		log.error("❌ [CLOSING ERROR]", error);
+	}
 }

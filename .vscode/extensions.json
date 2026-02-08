@@ -1,10 +1,10 @@
 {
 	"recommendations": [
-		"enhancedjs.html-in-template-string",
-		"forbeslindesay.vscode-sql-template-literal",
-		"hugo-vrijswijk.vscode-lit-xml",
+		"ahmadalli.vscode-nginx-conf",
+		"biomejs.biome",
+		"editorconfig.editorconfig",
 		"natizyskunk.sftp",
 		"oouo-diogo-perdigao.docthis",
-		"editorconfig.editorconfig"
+		"tobermory.es6-string-html"
 	]
 }

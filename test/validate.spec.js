@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
-import { error } from "node:console";
 import { after, before, test } from "node:test";
 import { XMLValidator } from "fast-xml-parser";
 import { HtmlValidate } from "html-validate";
 import { lintBem } from "posthtml-bem-linter";
+import { STATIC_PAGES } from "#common/constants.js";
+import { log } from "#common/lib/log.js";
 import { host } from "#server/constants.js";
-import { createApp } from "#server/lib/app.js";
+import { closeApp, createApp } from "#server/lib/app.js";
 
 const htmlvalidate = new HtmlValidate({
 	extends: ["html-validate:recommended"],
@@ -14,9 +15,6 @@ const htmlvalidate = new HtmlValidate({
 		"no-trailing-whitespace": "off",
 	},
 });
-
-/** @type {string[]} */
-const pages = ["/", "/404.html", "/update.html"];
 
 /** @type {string[]} */
 let markups = [];
@@ -30,7 +28,7 @@ before(async () => {
 	}
 
 	if (!markups.length) {
-		markups = await Promise.all(pages.map((page) => fetch(`${host}${page}`).then((res) => res.text())));
+		markups = await Promise.all(STATIC_PAGES.map((page) => fetch(`${host}${page}`).then((res) => res.text())));
 	}
 });
 
@@ -38,13 +36,13 @@ test("All pages have valid HTML markup", async () => {
 	let errorsCount = 0;
 
 	await Promise.all(
-		pages.map(async (page, i) => {
+		STATIC_PAGES.map(async (page, i) => {
 			const report = await htmlvalidate.validateString(markups[i]);
 			if (!report.valid) {
 				errorsCount++;
 				report.results.forEach(({ messages }) => {
-					messages.forEach(({ column, line, ruleUrl, message }) => {
-						error(`${page} [${line}:${column}] ${message} (${ruleUrl})`);
+					messages.forEach(({ column, line, message, ruleUrl }) => {
+						log.error(`${page} [${line}:${column}] ${message} (${ruleUrl})`);
 					});
 				});
 			}
@@ -57,8 +55,8 @@ test("All pages have valid HTML markup", async () => {
 test("All pages have valid BEM classes in markup", () => {
 	let errorsCount = 0;
 
-	pages.forEach(async (page, i) => {
-		const result = lintBem({ content: markups[i], log: error, name: page });
+	STATIC_PAGES.forEach(async (page, i) => {
+		const result = lintBem({ content: markups[i], log: log.error, name: page });
 		if (result.warningCount) {
 			errorsCount++;
 		}
@@ -71,13 +69,15 @@ test("sitemap.xml is valid", async () => {
 	const markup = await fetch(`${host}/sitemap.xml`).then((res) => res.text());
 	const result = XMLValidator.validate(markup);
 	const valid = result === true;
+
 	if (!valid) {
 		const { msg, line, col } = result.err;
-		error(`sitemap.xml [${line}:${col}] ${msg}`);
+		log.error(`sitemap.xml [${line}:${col}] ${msg}`);
 	}
+
 	assert.strictEqual(valid, true);
 });
 
-after(() => {
-	server?.close();
+after(async () => {
+	await closeApp(server);
 });

@@ -2,6 +2,7 @@ import { createReadStream } from "node:fs";
 import { access } from "node:fs/promises";
 import path from "node:path";
 import { STATIC_MIME_TYPES, staticExtensions } from "#common/constants.js";
+import { log } from "#common/lib/log.js";
 import { host, isDev } from "#server/constants.js";
 import { createApp } from "#server/lib/app.js";
 
@@ -14,9 +15,9 @@ let sseData = "reload";
  */
 function sendReload(res) {
 	res.writeHead(200, {
-		"Content-Type": "text/event-stream",
 		"Cache-Control": "no-cache",
 		Connection: "keep-alive",
+		"Content-Type": "text/event-stream",
 	});
 	res.write(`retry: 33\ndata: ${sseData}\nid: ${Date.now()}\n\n`);
 	sseData = "";
@@ -62,7 +63,7 @@ createApp(async (req, res, next) => {
 		res.writeHead(200, { "Content-Type": STATIC_MIME_TYPES[ext] });
 		createReadStream(filePath).pipe(res);
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		next?.(req, res);
 	}
 });

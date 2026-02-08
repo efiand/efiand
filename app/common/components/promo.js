@@ -1,7 +1,5 @@
-import { html } from "#common/utils/mark-template.js";
-
 export function renderPromo(main = "", addition = "") {
-	return html`
+	return /* html */ `
 		<main class="promo">
 			<nav>
 				<a class="promo__link" href="https://github.com/efiand">Портфолио</a>
@@ -10,7 +8,7 @@ export function renderPromo(main = "", addition = "") {
 			<div class="promo__lead">
 				<p class="promo__text">
 					${main}
-					${addition ? html`<span class="promo__addition">${addition}</span>` : ""}
+					${addition ? /* html */ `<span class="promo__addition">${addition}</span>` : ""}
 				</p>
 			</div>
 			<svg

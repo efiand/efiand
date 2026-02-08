@@ -1,10 +1,6 @@
 declare global {
 	import type { IncomingMessage, ServerResponse } from "node:http";
 
-	interface Window {
-		isDev?: boolean;
-	}
-
 	type Changefreq = "daily" | "weekly" | "monthly" | "yearly" | undefined;
 
 	type LayoutData = {
