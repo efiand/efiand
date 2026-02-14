@@ -1,5 +1,8 @@
 User-agent: *
+Disallow: /amp
+
+User-agent: Googlebot
+Allow: /amp
+
 Host: https://efiand.ru
 Sitemap: https://efiand.ru/sitemap.xml
-Disallow: /404.html
-Disallow: /update.html

@@ -1,20 +1,14 @@
 declare global {
 	import type { IncomingMessage, ServerResponse } from "node:http";
 
-	type Changefreq = "daily" | "weekly" | "monthly" | "yearly" | undefined;
-
-	type LayoutData = {
-		isDev?: boolean;
-		heading?: string;
-		pageTemplate?: string;
-		pathname?: string;
-	};
+	type ReqBody = Record<string, unknown>;
 
 	type Route = {
 		[method: IncomingMessage["method"]]: RouteMethod;
 	};
 
 	type RouteData = {
+		statusCode?: number;
 		contentType?: string;
 		page?: LayoutData;
 		template?: string;
@@ -23,6 +17,9 @@ declare global {
 	type RouteMethod = (params: RouteParams) => Promise<RouteData>;
 
 	type RouteParams = {
+		body: ReqBody;
+		id: number;
+		isAmp: boolean;
 		req: RouteRequest;
 		res: RouteResponse;
 	};
@@ -33,9 +30,12 @@ declare global {
 
 	type ServerMiddleware = (req: IncomingMessage, res: RouteResponse, next?: ServerMiddleware) => Promise<void>;
 
-	type SitemapPage = {
-		loc: string;
-		priority?: string;
+	type TelegramPayload = {
+		chat?: {
+			id?: string | number;
+			username?: string;
+		};
+		text: string;
 	};
 }
 

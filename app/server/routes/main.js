@@ -1,4 +1,4 @@
-import { renderPromo } from "#common/components/promo.js";
+import { renderPromo } from "#common/templates/promo.js";
 
 export const mainRoute = {
 	/** @type {RouteMethod} */

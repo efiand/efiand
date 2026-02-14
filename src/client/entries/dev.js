@@ -10,5 +10,3 @@ function onMessage({ data }) {
 }
 
 eventSource.addEventListener("message", onMessage);
-
-window.isDev = true;

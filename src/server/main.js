@@ -10,7 +10,6 @@ let sseData = "reload";
 
 /**
  * Server Sent Events
- *
  * @type {(res: RouteResponse) => void}
  */
 function sendReload(res) {
@@ -26,12 +25,12 @@ function sendReload(res) {
 /** @type {(pathname: string) => string} */
 function getStaticDir(pathname) {
 	if (isDev) {
-		if (/^\/common|components\/.*\.js$/.test(pathname)) {
-			return "./app";
-		}
-
 		if (/^\/client\/.*\.(css|js|svg)$/.test(pathname)) {
 			return "./src";
+		}
+
+		if (/^\/common|components\/.*\.js$/.test(pathname)) {
+			return "./app";
 		}
 	}
 

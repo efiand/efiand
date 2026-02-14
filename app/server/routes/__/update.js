@@ -1,11 +1,13 @@
-import { renderPromo } from "#common/components/promo.js";
+import { renderPromo } from "#common/templates/promo.js";
+
+const heading = "Сайт обновляется";
 
 export const updateRoute = {
 	/** @type {RouteMethod} */
 	async GET() {
 		return {
 			page: {
-				heading: "Обновление",
+				heading,
 				pageTemplate: renderPromo("Мы обновляемся.", "Попробуйте обновить страницу."),
 			},
 		};

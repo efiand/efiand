@@ -10,7 +10,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '22'
+          node-version: '24'
       - name: Checkout
         uses: actions/checkout@master
       - name: Install dependencies
@@ -26,5 +26,28 @@ jobs:
           host: ${{ secrets.DEPLOY_SERVER_HOST }}
           username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
           password: ${{ secrets.DEPLOY_SERVER_PASSWORD }}
-          source: app/__/*,public/*,tools/*
-          target: ${{ secrets.DEPLOY_SERVER_TARGET }}
+          source: app/*,public/*,tools/*,package*.json
+          target: ${{ secrets.DEPLOY_SERVER_TARGET }}/new
+      - name: Modify server
+        if: ${{ contains(github.event.head_commit.message, '[deploy]') }}
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_SERVER_HOST }}
+          username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
+          password: ${{ secrets.DEPLOY_SERVER_PASSWORD }}
+          script: |
+            cd ${{ secrets.DEPLOY_SERVER_TARGET }}/new
+            npm ci --omit=dev --ignore-scripts
+            cd ..
+            systemctl stop ${{ secrets.APP_NAME }}
+            mkdir old
+            mv app old/app
+            mv node_modules old/node_modules
+            mv public old/public
+            mv tools old/tools
+            mv package.json old/package.json
+            mv package-lock.json old/package-lock.json
+            mv new/* .
+            systemctl start ${{ secrets.APP_NAME }}
+            rm -rf old
+            rm -rf new

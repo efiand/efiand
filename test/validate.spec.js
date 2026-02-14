@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
+import amphtmlValidator from "amphtml-validator";
 import { XMLValidator } from "fast-xml-parser";
 import { HtmlValidate } from "html-validate";
 import { lintBem } from "posthtml-bem-linter";
@@ -16,11 +17,20 @@ const htmlvalidate = new HtmlValidate({
 	},
 });
 
+const ampPages = ["/"];
+
+/** @type {amphtmlValidator.Validator | undefined} */
+let ampValidator;
+
 /** @type {string[]} */
 let markups = [];
 
 /** @type {import("node:http").Server | undefined} */
 let server;
+
+async function getMarkup(page = "") {
+	return await fetch(`${host}${page}`).then((res) => res.text());
+}
 
 before(async () => {
 	if (!server) {
@@ -28,7 +38,7 @@ before(async () => {
 	}
 
 	if (!markups.length) {
-		markups = await Promise.all(STATIC_PAGES.map((page) => fetch(`${host}${page}`).then((res) => res.text())));
+		markups = await Promise.all(STATIC_PAGES.map(getMarkup));
 	}
 });
 
@@ -55,12 +65,44 @@ test("All pages have valid HTML markup", async () => {
 test("All pages have valid BEM classes in markup", () => {
 	let errorsCount = 0;
 
-	STATIC_PAGES.forEach(async (page, i) => {
+	STATIC_PAGES.forEach((page, i) => {
 		const result = lintBem({ content: markups[i], log: log.error, name: page });
 		if (result.warningCount) {
 			errorsCount++;
 		}
 	});
+
+	assert.strictEqual(errorsCount, 0);
+});
+
+test("All AMP versions have valid AMP markup", async () => {
+	let errorsCount = 0;
+
+	if (!ampValidator) {
+		ampValidator = await amphtmlValidator.getInstance();
+	}
+
+	await Promise.all(
+		ampPages.map(async (page) => {
+			if (page.endsWith(".html")) {
+				return;
+			}
+
+			const url = page === "/" ? "/amp" : `/amp${page}`;
+			const markup = await fetch(`${host}${url}`).then((res) => res.text());
+
+			/** @type {amphtmlValidator.ValidationResult | undefined} */
+			const result = ampValidator?.validateString(markup);
+			if (result?.status === "FAIL") {
+				errorsCount++;
+			}
+
+			result?.errors.forEach(({ col, line, message, severity, specUrl }) => {
+				const output = severity === "ERROR" ? log.error : log.warn;
+				output(`${url} [${line}:${col}] ${message} ${specUrl ? `\n(${specUrl})` : ""})`);
+			});
+		}),
+	);
 
 	assert.strictEqual(errorsCount, 0);
 });

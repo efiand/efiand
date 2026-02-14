@@ -1,8 +1,10 @@
 import { createServer } from "node:http";
-import { renderPromo } from "#common/components/promo.js";
 import { log } from "#common/lib/log.js";
+import { noAmp } from "#common/lib/no-amp.js";
+import { renderErrorPage } from "#common/templates/error-page.js";
 import { host, isDev, port } from "#server/constants.js";
 import { renderPage } from "#server/lib/page.js";
+import { getRequestBody } from "#server/lib/request.js";
 import { routes } from "#server/routes/index.js";
 
 /** @type {(error: unknown, url: URL) => Promise<{ statusCode: number; template: string }>} */
@@ -24,8 +26,10 @@ async function handleError(error, { href, pathname }) {
 
 	const heading = `Ошибка ${statusCode}`;
 	const template = await renderPage({
+		description: "Страница ошибок.",
 		heading,
-		pageTemplate: renderPromo(`${heading}.`, message),
+		pageTemplate: renderErrorPage(statusCode, message),
+		pathname,
 	});
 
 	return { statusCode, template };
@@ -33,9 +37,21 @@ async function handleError(error, { href, pathname }) {
 
 /** @type {ServerMiddleware} */
 async function next(req, res) {
+	const { method = "GET" } = req;
 	const url = new URL(`${host}${req.url}`);
-	const { pathname } = url;
-	const route = routes[pathname];
+	const isAmp = url.pathname === "/amp" || url.pathname.startsWith("/amp/");
+	const isApi = url.pathname.startsWith("/api/");
+	const pathname = url.pathname === "/amp" ? "/" : url.pathname.replace(/^\/amp\//, "/");
+	const [, rawRouteName = "", rawId, rawIdInApi] = pathname.split("/");
+	const id = Number(isApi ? rawIdInApi : rawId);
+
+	let routeName = rawRouteName;
+	if (isApi) {
+		routeName = `api/${rawId}`;
+	}
+
+	const routeKey = Number.isNaN(id) ? pathname : `/${routeName}/:id`;
+	const route = routes[routeKey];
 
 	let contentType = "text/html; charset=utf-8";
 	let template = "";
@@ -46,24 +62,33 @@ async function next(req, res) {
 			throw new Error("Страница не найдена.", { cause: 404 });
 		}
 
-		const { method = "GET" } = req;
-		if (!route[method]) {
-			throw new Error("Method not allowed!", { cause: 405 });
+		if (isAmp && noAmp(routeKey)) {
+			throw new Error("Страница не имеет AMP-версии.", { cause: 404 });
 		}
 
-		const routeData = await route[method]({ req, res });
-		({ contentType = "text/html; charset=utf-8", template = "" } = routeData);
+		if (!route[method]) {
+			if (method === "HEAD" && route.GET) {
+				route.HEAD = route.GET;
+			} else {
+				throw new Error("Method not allowed!", { cause: 405 });
+			}
+		}
+
+		const body = await getRequestBody(req);
+
+		const routeData = await route[method]({ body, id, isAmp, req, res });
+		({ contentType = "text/html; charset=utf-8", statusCode = 200, template = "" } = routeData);
 
 		if (routeData.page) {
-			template = await renderPage({ ...routeData.page, pathname });
+			template = await renderPage({ ...routeData.page, isAmp, pathname });
 		}
 	} catch (error) {
 		({ statusCode, template } = await handleError(error, url));
 	}
 
-	res.statusCode = statusCode;
 	res.setHeader("Content-Type", contentType);
-	res.end(template.trim());
+	res.statusCode = statusCode;
+	res.end(method === "HEAD" ? "" : template);
 }
 
 /** @type {(middleware?: ServerMiddleware) => import("node:http").Server} */

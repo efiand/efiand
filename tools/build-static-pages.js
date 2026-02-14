@@ -9,7 +9,7 @@ let completedPages = 0;
 
 try {
 	await Promise.all(
-		[...STATIC_PAGES, "/sitemap.xml"].map(async (url) => {
+		[...STATIC_PAGES, "/amp", "/sitemap.xml"].map(async (url) => {
 			const markup = await fetch(`${host}${url}`).then((res) => res.text());
 
 			if (url.includes(".")) {
@@ -18,11 +18,13 @@ try {
 				await writeFile("./public/index.html", await minifyHtml(markup));
 			} else {
 				const dir = `./${url.startsWith("/__") ? "app" : "public"}${url}`;
+
 				try {
 					await access(dir);
 				} catch {
 					await mkdir(dir, { recursive: true });
 				}
+
 				await writeFile(`${dir}/index.html`, await minifyHtml(markup));
 			}
 
