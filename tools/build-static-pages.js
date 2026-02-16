@@ -1,5 +1,6 @@
 import { access, mkdir, writeFile } from "node:fs/promises";
 import { STATIC_PAGES } from "#common/constants.js";
+import { minifySitemap } from "#common/lib/minify-sitemap.js";
 import { host } from "#server/constants.js";
 import { closeApp, createApp } from "#server/lib/app.js";
 import { minifyHtml } from "#server/lib/minify-html.js";
@@ -12,10 +13,10 @@ try {
 		[...STATIC_PAGES, "/amp", "/sitemap.xml"].map(async (url) => {
 			const markup = await fetch(`${host}${url}`).then((res) => res.text());
 
-			if (url.includes(".")) {
-				await writeFile(`./public${url}`, markup);
-			} else if (url === "/") {
+			if (url === "/") {
 				await writeFile("./public/index.html", await minifyHtml(markup));
+			} else if (url === "/sitemap.xml") {
+				await writeFile(`./public${url}`, minifySitemap(markup));
 			} else {
 				const dir = `./${url.startsWith("/__") ? "app" : "public"}${url}`;
 
