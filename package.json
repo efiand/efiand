@@ -5,7 +5,7 @@
 		"node-telegram-bot-api": "0.67.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.0",
+		"@biomejs/biome": "2.4.2",
 		"@dotenvx/dotenvx": "1.52.0",
 		"@fastify/pre-commit": "2.2.1",
 		"@types/amphtml-validator": "1.0.4",
