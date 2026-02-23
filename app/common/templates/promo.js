@@ -1,9 +1,9 @@
-export function renderPromo(main = "", addition = "") {
+import { renderNav } from "#common/templates/nav.js";
+
+export function renderPromo(main = "", addition = "", isAmp = false) {
 	return /* html */ `
 		<main class="promo">
-			<nav>
-				<a class="promo__link" href="https://github.com/efiand">Портфолио</a>
-			</nav>
+			${renderNav("promo__nav", "/", isAmp)}
 			<h1 class="_visually-hidden">Сайт веб-разработчика Андрея Ефимова</h1>
 			<div class="promo__lead">
 				<p class="promo__text">

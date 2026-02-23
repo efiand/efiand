@@ -7,7 +7,7 @@ export const PROJECT_DESCRIPTION = "Сайт веб-разработчика: у
 export const YANDEX_METRIKA_ID = 102299682;
 
 export const version = {
-	CSS: 3,
+	CSS: 5,
 };
 
 /** @type {Record<string, string>} */
@@ -25,4 +25,6 @@ export const STATIC_MIME_TYPES = {
 
 export const staticExtensions = new Set(Object.keys(STATIC_MIME_TYPES));
 
-export const STATIC_PAGES = ["/", "/__/404", "/__/update"];
+export const STATIC_PAGES = ["/", "/__/404", "/__/update", "/portfolio", "/order"];
+
+export const AMP_PAGES = ["/amp", "/amp/portfolio", "/amp/order"];

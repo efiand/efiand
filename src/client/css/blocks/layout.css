@@ -5,4 +5,5 @@
 	flex-direction: column;
 	box-sizing: border-box;
 	overflow-y: scroll;
+	background-image: linear-gradient(#71bddf, #61bddf);
 }

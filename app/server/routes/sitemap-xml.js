@@ -1,7 +1,7 @@
 import { BASE_URL } from "#common/constants.js";
 
 /** @type {SitemapPage[]} */
-const pages = [""].map((page) => ({ loc: `${BASE_URL}${page}`, priority: "0.8" }));
+const pages = ["", "/order", "/portfolio"].map((page) => ({ loc: `${BASE_URL}${page}`, priority: "0.8" }));
 
 /** @type {(data: SitemapPage) => string} */
 function renderPage({ loc, priority }) {

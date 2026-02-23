@@ -1,0 +1,22 @@
+.nav {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.nav__list {
+	display: contents;
+}
+
+@media (max-width: 479px) {
+	.nav__item:last-child {
+		position: fixed;
+		transform: scale(0);
+	}
+}
+
+@media (min-width: 480px) {
+	.nav {
+		gap: 1rem;
+	}
+}

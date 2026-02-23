@@ -4,7 +4,7 @@ import amphtmlValidator from "amphtml-validator";
 import { XMLValidator } from "fast-xml-parser";
 import { HtmlValidate } from "html-validate";
 import { lintBem } from "posthtml-bem-linter";
-import { STATIC_PAGES } from "#common/constants.js";
+import { AMP_PAGES, STATIC_PAGES } from "#common/constants.js";
 import { log } from "#common/lib/log.js";
 import { host } from "#server/constants.js";
 import { closeApp, createApp } from "#server/lib/app.js";
@@ -16,8 +16,6 @@ const htmlvalidate = new HtmlValidate({
 		"no-trailing-whitespace": "off",
 	},
 });
-
-const ampPages = ["/"];
 
 /** @type {amphtmlValidator.Validator | undefined} */
 let ampValidator;
@@ -83,12 +81,7 @@ test("All AMP versions have valid AMP markup", async () => {
 	}
 
 	await Promise.all(
-		ampPages.map(async (page) => {
-			if (page.endsWith(".html")) {
-				return;
-			}
-
-			const url = page === "/" ? "/amp" : `/amp${page}`;
+		AMP_PAGES.map(async (url) => {
 			const markup = await fetch(`${host}${url}`).then((res) => res.text());
 
 			/** @type {amphtmlValidator.ValidationResult | undefined} */

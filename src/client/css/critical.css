@@ -3,5 +3,10 @@
 @import url("common/global.css");
 @import url("common/helpers.css");
 
+@import url("blocks/button.css");
+@import url("blocks/inner-page.css");
 @import url("blocks/layout.css");
+@import url("blocks/nav.css");
+@import url("blocks/portfolio.css");
 @import url("blocks/promo.css");
+@import url("blocks/tariffs.css");

@@ -1,5 +1,5 @@
 import { access, mkdir, writeFile } from "node:fs/promises";
-import { STATIC_PAGES } from "#common/constants.js";
+import { AMP_PAGES, STATIC_PAGES } from "#common/constants.js";
 import { minifySitemap } from "#common/lib/minify-sitemap.js";
 import { host } from "#server/constants.js";
 import { closeApp, createApp } from "#server/lib/app.js";
@@ -10,7 +10,7 @@ let completedPages = 0;
 
 try {
 	await Promise.all(
-		[...STATIC_PAGES, "/amp", "/sitemap.xml"].map(async (url) => {
+		[...STATIC_PAGES, ...AMP_PAGES, "/sitemap.xml"].map(async (url) => {
 			const markup = await fetch(`${host}${url}`).then((res) => res.text());
 
 			if (url === "/") {
