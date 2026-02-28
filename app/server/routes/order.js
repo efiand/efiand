@@ -1,12 +1,12 @@
-import { renderInnerPage } from "#common/templates/inner-page.js";
+import { renderInnerPage } from '#common/templates/inner-page.js';
 
 const TARIFFS = [
 	{
-		features: "",
-		id: "mission",
-		note: "(количество предложений ограничено)",
-		price: "Бесплатно",
-		title: "Миссия",
+		features: '',
+		id: 'mission',
+		note: '(количество предложений ограничено)',
+		price: 'Бесплатно',
+		title: 'Миссия',
 	},
 	{
 		features: /* html */ `
@@ -14,10 +14,10 @@ const TARIFFS = [
 			<li>Корректура по запросу</li>
 			<li>Оперативная реализация</li>
 		`,
-		id: "business",
-		note: "",
-		price: "Цена договорная",
-		title: "Бизнес",
+		id: 'business',
+		note: '',
+		price: 'Цена договорная',
+		title: 'Бизнес',
 	},
 ];
 
@@ -33,11 +33,11 @@ export const orderRoute = {
 	async GET({ isAmp }) {
 		return {
 			page: {
-				heading: "Заказать сайт",
+				heading: 'Заказать сайт',
 				pageTemplate: renderInnerPage({
-					heading: "Тарифы",
+					heading: 'Тарифы',
 					isAmp,
-					pathname: "/order",
+					pathname: '/order',
 					template: /* html */ `
 						<ul class="tariffs">
 							${TARIFFS.map(
@@ -55,7 +55,7 @@ export const orderRoute = {
 										<p class="tariffs__note">${note}</p>
 									</li>
 								`,
-							).join("")}
+							).join('')}
 						</ul>
 					`,
 				}),

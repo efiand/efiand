@@ -1,6 +1,6 @@
-import { renderPromo } from "#common/templates/promo.js";
+import { renderPromo } from '#common/templates/promo.js';
 
-const heading = "Сайт обновляется";
+const heading = 'Сайт обновляется';
 
 export const updateRoute = {
 	/** @type {RouteMethod} */
@@ -8,7 +8,7 @@ export const updateRoute = {
 		return {
 			page: {
 				heading,
-				pageTemplate: renderPromo("Мы обновляемся.", "Попробуйте обновить страницу."),
+				pageTemplate: renderPromo('Мы обновляемся.', 'Попробуйте обновить страницу.'),
 			},
 		};
 	},

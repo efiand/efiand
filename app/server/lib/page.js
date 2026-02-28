@@ -1,9 +1,9 @@
-import { BASE_URL, PROJECT_DESCRIPTION, PROJECT_TITLE, version } from "#common/constants.js";
-import { noAmp } from "#common/lib/no-amp.js";
-import { renderLayout } from "#common/templates/layout.js";
-import { renderDocumentTitle } from "#common/templates/title.js";
-import { isDev } from "#server/constants.js";
-import { renderAmpAssets } from "#server/lib/amp.js";
+import { BASE_URL, PROJECT_DESCRIPTION, PROJECT_TITLE, version } from '#common/constants.js';
+import { noAmp } from '#common/lib/no-amp.js';
+import { renderLayout } from '#common/templates/layout.js';
+import { renderDocumentTitle } from '#common/templates/title.js';
+import { isDev } from '#server/constants.js';
+import { renderAmpAssets } from '#server/lib/amp.js';
 
 function renderAssets() {
 	return isDev
@@ -22,12 +22,12 @@ function renderUrlMeta(pathname, isAmp) {
 		return /* html */ `<meta name="robots" content="noindex, nofollow">`;
 	}
 
-	const ampUrl = pathname === "/" ? "/amp" : `/amp${pathname}`;
+	const ampUrl = pathname === '/' ? '/amp' : `/amp${pathname}`;
 	let template = /* html */ `<meta property="og:url" content="${BASE_URL}${isAmp ? ampUrl : pathname}">`;
 	if (!isAmp && !noAmp(pathname)) {
 		template += /* html */ `<link rel="ampurl" href="${BASE_URL}${ampUrl}">`;
 	}
-	if (!pathname.startsWith("/__")) {
+	if (!pathname.startsWith('/__')) {
 		template += /* html */ `<link rel="canonical" href="${BASE_URL}${pathname}">`;
 	}
 
@@ -37,27 +37,27 @@ function renderUrlMeta(pathname, isAmp) {
 /** @type {(data: LayoutData) => Promise<string>} */
 export async function renderPage({
 	description = PROJECT_DESCRIPTION,
-	headTemplate = "",
-	heading = "",
+	headTemplate = '',
+	heading = '',
 	isAmp = false,
-	ogImage = "/web-app-manifest-512x512.png",
+	ogImage = '/web-app-manifest-512x512.png',
 	ogImageWidth = 512,
 	ogImageHeight = 512,
-	pageTemplate = "",
-	pathname = "",
+	pageTemplate = '',
+	pathname = '',
 }) {
 	const title = renderDocumentTitle(heading);
-	const assetsTemplate = isAmp ? await renderAmpAssets(pageTemplate.includes("<form")) : renderAssets();
+	const assetsTemplate = isAmp ? await renderAmpAssets(pageTemplate.includes('<form')) : renderAssets();
 	const descriptionTemplate = description
 		? /* html */ `
 			<meta name="description" content="${description}">
 			<meta property="og:description" content="${description}">
 		`
-		: "";
+		: '';
 
 	const template = /* html */ `
 		<!DOCTYPE html>
-		<html lang="ru" prefix="og: http://ogp.me/ns#" ${isAmp ? "⚡" : ""}>
+		<html lang="ru" prefix="og: http://ogp.me/ns#" ${isAmp ? '⚡' : ''}>
 		<head>
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1">

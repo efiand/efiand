@@ -1,4 +1,4 @@
-import { renderPromo } from "#common/templates/promo.js";
+import { renderPromo } from '#common/templates/promo.js';
 
 /** @type {(statusCode: number, message: string) => string} */
 export function renderErrorPage(statusCode, message) {

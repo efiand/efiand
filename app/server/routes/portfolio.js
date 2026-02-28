@@ -1,25 +1,25 @@
-import { renderInnerPage } from "#common/templates/inner-page.js";
+import { renderInnerPage } from '#common/templates/inner-page.js';
 
 const PROJECTS = [
 	{
-		description: "Стартап-проект кулинарного блогера.",
-		url: "aromachef.ru",
+		description: 'Стартап-проект кулинарного блогера.',
+		url: 'aromachef.ru',
 	},
 	{
 		description:
-			"Конструктор кулинарной книги с возможностью добавления и редактирования рецептов. Визуальный редактор, категории, разделы.",
-		url: "cookbook.efiand.ru",
+			'Конструктор кулинарной книги с возможностью добавления и редактирования рецептов. Визуальный редактор, категории, разделы.',
+		url: 'cookbook.efiand.ru',
 	},
 	{
-		description: "Карточный пасьянс «Колодец».",
-		url: "well.efiand.ru",
+		description: 'Карточный пасьянс «Колодец».',
+		url: 'well.efiand.ru',
 	},
 	{
-		description: "Произведения Андрей Раскатова.",
-		url: "a-raskatov.github.io",
+		description: 'Произведения Андрей Раскатова.',
+		url: 'a-raskatov.github.io',
 	},
 ];
-const heading = "Портфолио";
+const heading = 'Портфолио';
 
 export const portfolioRoute = {
 	/** @type {RouteMethod} */
@@ -30,7 +30,7 @@ export const portfolioRoute = {
 				pageTemplate: renderInnerPage({
 					heading,
 					isAmp,
-					pathname: "/portfolio",
+					pathname: '/portfolio',
 					template: /* html */ `
 						<ul class="portfolio">
 							${PROJECTS.map(
@@ -40,7 +40,7 @@ export const portfolioRoute = {
 										<p>${description}</p>
 									</li>
 								`,
-							).join("")}
+							).join('')}
 						</ul>
 					`,
 				}),

@@ -1,14 +1,14 @@
-import { renderNav } from "#common/templates/nav.js";
+import { renderNav } from '#common/templates/nav.js';
 
-export function renderPromo(main = "", addition = "", isAmp = false) {
+export function renderPromo(main = '', addition = '', isAmp = false) {
 	return /* html */ `
 		<main class="promo">
-			${renderNav("promo__nav", "/", isAmp)}
+			${renderNav('promo__nav', '/', isAmp)}
 			<h1 class="_visually-hidden">Сайт веб-разработчика Андрея Ефимова</h1>
 			<div class="promo__lead">
 				<p class="promo__text">
 					${main}
-					${addition ? /* html */ `<span class="promo__addition">${addition}</span>` : ""}
+					${addition ? /* html */ `<span class="promo__addition">${addition}</span>` : ''}
 				</p>
 			</div>
 			<svg

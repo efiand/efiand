@@ -1,10 +1,10 @@
 declare global {
-	import type { IncomingMessage, ServerResponse } from "node:http";
+	import type { IncomingMessage, ServerResponse } from 'node:http';
 
 	type ReqBody = Record<string, unknown>;
 
 	type Route = {
-		[method: IncomingMessage["method"]]: RouteMethod;
+		[method: IncomingMessage['method']]: RouteMethod;
 	};
 
 	type RouteData = {
