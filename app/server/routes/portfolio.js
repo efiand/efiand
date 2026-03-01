@@ -31,20 +31,25 @@ export const portfolioRoute = {
 					heading,
 					isAmp,
 					pathname: '/portfolio',
-					template: /* html */ `
-						<ul class="portfolio">
-							${PROJECTS.map(
-								({ description, url }) => /* html */ `
-									<li class="portfolio__card">
-										<a class="portfolio__link" href="https://${url}" target="_blank">${url}</a>
-										<p>${description}</p>
-									</li>
-								`,
-							).join('')}
-						</ul>
-					`,
+					template: /* html */ `<ul class="portfolio">${PROJECTS.map(mapProject).join('')}</ul>`,
 				}),
 			},
 		};
 	},
 };
+
+/** @type {(project: { description: string; url: string }) => string} */
+function mapProject({ description, url }) {
+	const href = `https://${url}`;
+	const iconSrc = `${href}/favicon.svg`;
+
+	return /* html */ `
+		<li class="portfolio__card">
+			<div class="portfolio__image">
+				<img src="${iconSrc}" width="20" height="20" alt="Логотип проекта «${url}»">
+			</div>
+			<a class="portfolio__link" href="${href}" target="_blank">${url}</a>
+			<p class="portfolio__description">${description}</p>
+		</li>
+	`;
+}
