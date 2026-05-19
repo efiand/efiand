@@ -1,0 +1,14 @@
+*cache*
+*tmp*
+.DS_Store
+.env
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+Thumbs.db
+app/__
+bundles
+logs
+node_modules
+public/**/*.html
+public/*.xml

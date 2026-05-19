@@ -1,0 +1,21 @@
+.nav {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.nav__list {
+	display: contents;
+}
+
+@media (min-width: 480px) {
+	.nav {
+		gap: 1rem;
+	}
+}
+
+@media (min-width: 1240px) {
+	.nav__button {
+		min-width: 8.5rem;
+	}
+}

@@ -1,0 +1,65 @@
+html {
+	--color-black: #323232;
+	--color-link: #1e5f9a;
+	--font-basic: "Manrope", sans-serif;
+	--shadow: 0 1px 1px #5555551f, 0 2px 2px #5555553d;
+	--shadow-secondary: 1px 1px 1px #5555551f, 2px 2px 2px #5555553d;
+	--scroll-behavior: auto;
+	--transition: none;
+
+	font-size: 16px;
+}
+
+body {
+	margin: 0;
+	line-height: 1.5;
+	font-family: var(--font-basic);
+	font-feature-settings:
+		"tnum" on,
+		"lnum" on;
+	color: var(--color-black);
+	text-rendering: optimizeLegibility;
+	-webkit-tap-highlight-color: transparent;
+	overflow-x: hidden;
+	overflow-anchor: none;
+}
+
+a {
+	text-decoration-skip-ink: none;
+	text-decoration-thickness: from-font;
+	color: var(--color-link);
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+p {
+	margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		--transition: 0.3s ease-in-out;
+		--scroll-behavior: smooth;
+	}
+}
+
+@media (min-width: 768px) {
+	html {
+		font-size: 18px;
+	}
+}
+
+@media (min-width: 1240px) {
+	html {
+		font-size: 20px;
+	}
+}

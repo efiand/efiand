@@ -1,0 +1,18 @@
+.inner-page {
+	display: grid;
+	gap: 2rem;
+	justify-items: center;
+	min-width: 288px;
+	padding: 1.5rem 1rem;
+}
+
+.inner-page__footer-link {
+	font-size: 0.8rem;
+	color: inherit;
+}
+
+@media (min-width: 1240px) {
+	.inner-page {
+		padding-inline: calc(50% - 600px);
+	}
+}

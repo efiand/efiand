@@ -1,0 +1,51 @@
+{
+	"dependencies": {
+		"formidable": "3.5.4",
+		"html-minifier-terser": "7.2.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.15",
+		"@dotenvx/dotenvx": "1.66.0",
+		"@fastify/pre-commit": "2.2.1",
+		"@types/amphtml-validator": "1.0.4",
+		"@types/formidable": "3.5.1",
+		"@types/html-minifier-terser": "7.0.2",
+		"@types/node": "25.9.0",
+		"@types/postcss-import": "14.0.3",
+		"@types/postcss-url": "10.0.4",
+		"amphtml-validator": "1.0.38",
+		"cssnano": "8.0.1",
+		"fast-xml-validator": "1.1.0",
+		"html-validate": "11.2.0",
+		"nodemon": "3.1.14",
+		"postcss": "8.5.15",
+		"postcss-cli": "11.0.1",
+		"postcss-import": "16.1.1",
+		"postcss-sort-media-queries": "6.6.1",
+		"posthtml-bem-linter": "0.1.8",
+		"typescript": "6.0.3"
+	},
+	"imports": {
+		"#client/*": "./src/client/*",
+		"#common/*": "./app/common/*",
+		"#server/*": "./app/server/*"
+	},
+	"main": "./app/server/main.js",
+	"name": "efiand.ru",
+	"pre-commit": [
+		"lint-format",
+		"test"
+	],
+	"private": true,
+	"scripts": {
+		"build": "postcss src/client/css/*.css -d public/bundles && node ./tools/build-static-pages.js",
+		"dev": "dotenvx run -- nodemon ./src/server/main.js",
+		"lint": "npm run type-check && biome check",
+		"lint-format": "npm run type-check && biome check --write",
+		"preview": "dotenvx run -- node ./src/server/main.js",
+		"test": "npm run build && node --test",
+		"type-check": "tsc -p ./tsconfig.json",
+		"upgrade": "node ./tools/upgrade.js"
+	},
+	"type": "module"
+}
